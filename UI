@@ -1,0 +1,25 @@
+import tkinter
+
+THEME_COLOR = "#375362"
+
+class UserInterface:
+    def __init__(self):
+        self.score = 0
+        self.win = tkinter.Tk()
+        self.win.title('Quizler')
+        self.win.config(pady=20,padx=20, bg=THEME_COLOR)
+
+        self.scoreboard = tkinter.Label(text=f'Score: {self.score}', bg=THEME_COLOR, fg='white')
+        self.scoreboard.config(pady=20)
+        self.scoreboard.grid(column=1, row=0)
+
+        self.x_image = tkinter.PhotoImage(file='images/false.png')
+        self.y_image = tkinter.PhotoImage(file='images/true.png')
+        self.x_button = tkinter.Button(image=self.x_image)
+        self.x_button.grid(column=0, row=2)
+        self.y_button = tkinter.Button(image=self.y_image)
+        self.y_button.grid(column=1, row=2)
+
+        self.canvas = tkinter.Canvas(width=500, height=500, bg='white')
+        self.canvas.grid(column=0,row=1, columnspan=2)
+        self.win.mainloop()
