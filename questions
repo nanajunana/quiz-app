@@ -1,0 +1,8 @@
+import requests
+
+class Questions:
+    def __init__(self):
+        self.response = requests.get(url='https://opentdb.com/api.php?amount=10&category=31&type=boolean')
+        self.response.raise_for_status()
+        self.quiz_list = [{'question': item['question'], 'answer': item["correct_answer"]}
+                     for item in self.response.json()['results']]
