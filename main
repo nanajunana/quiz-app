@@ -1,0 +1,7 @@
+import questions
+import UI
+
+questions = questions.Questions()
+user_interface = UI.UserInterface()
+
+
