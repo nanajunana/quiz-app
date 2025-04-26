@@ -1,7 +1,9 @@
 import questions
 import UI
+import html
+import quizbrain
 
 questions = questions.Questions()
-user_interface = UI.UserInterface()
-
+quizbrain = quizbrain.QuizBrain(questions.quiz_list, item_number=0)
+interface = UI.UserInterface(quizbrain.score, question=html.unescape(quizbrain.question_list[0]['question']), total_questions=quizbrain.question_length)
 
