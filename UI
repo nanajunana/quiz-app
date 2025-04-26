@@ -3,23 +3,32 @@ import tkinter
 THEME_COLOR = "#375362"
 
 class UserInterface:
-    def __init__(self):
-        self.score = 0
+    def __init__(self, score, question, total_questions):
+        self.user_answer = None
         self.win = tkinter.Tk()
         self.win.title('Quizler')
         self.win.config(pady=20,padx=20, bg=THEME_COLOR)
 
-        self.scoreboard = tkinter.Label(text=f'Score: {self.score}', bg=THEME_COLOR, fg='white')
+        self.scoreboard = tkinter.Label(text=f'Score: {score}/{total_questions}', bg=THEME_COLOR, fg='white')
         self.scoreboard.config(pady=20)
         self.scoreboard.grid(column=1, row=0)
 
         self.x_image = tkinter.PhotoImage(file='images/false.png')
         self.y_image = tkinter.PhotoImage(file='images/true.png')
-        self.x_button = tkinter.Button(image=self.x_image)
+        self.x_button = tkinter.Button(image=self.x_image, command=self.press_x)
         self.x_button.grid(column=0, row=2)
-        self.y_button = tkinter.Button(image=self.y_image)
+        self.y_button = tkinter.Button(image=self.y_image, command=self.press_y)
         self.y_button.grid(column=1, row=2)
 
         self.canvas = tkinter.Canvas(width=500, height=500, bg='white')
+        self.question = self.canvas.create_text(250,250,text=question, width=400)
         self.canvas.grid(column=0,row=1, columnspan=2)
         self.win.mainloop()
+
+    def press_x(self):
+        self.user_answer = False
+    def press_y(self):
+        self.user_answer = True
+
+    def update_score(self, score):
+        self.scoreboard.config(text=f'Score: {score}')
