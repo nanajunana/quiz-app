@@ -1,0 +1,11 @@
+class QuizBrain:
+    def __init__(self,question_list, item_number):
+        self.score = 0
+        self.question_list = question_list
+        self.answer = self.question_list[item_number]['answer']
+        self.question = self.question_list[item_number]['question']
+        self.question_length = len(self.question_list)
+
+    def score(self, user_answer):
+        if user_answer == self.answer:
+            self.score += 1
