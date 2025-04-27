@@ -1,15 +1,18 @@
 import tkinter
+import html
 
 THEME_COLOR = "#375362"
 
 class UserInterface:
-    def __init__(self, score, question, total_questions):
-        self.user_answer = None
+    def __init__(self, quizbrain):
+        self.quizbrain = quizbrain
+
         self.win = tkinter.Tk()
         self.win.title('Quizler')
         self.win.config(pady=20,padx=20, bg=THEME_COLOR)
 
-        self.scoreboard = tkinter.Label(text=f'Score: {score}/{total_questions}', bg=THEME_COLOR, fg='white')
+        self.scoreboard = tkinter.Label(text=f'Score: {self.quizbrain.score}/{self.quizbrain.question_length}',
+                                        bg=THEME_COLOR, fg='white')
         self.scoreboard.config(pady=20)
         self.scoreboard.grid(column=1, row=0)
 
@@ -21,14 +24,30 @@ class UserInterface:
         self.y_button.grid(column=1, row=2)
 
         self.canvas = tkinter.Canvas(width=500, height=500, bg='white')
-        self.question = self.canvas.create_text(250,250,text=question, width=400)
+        self.question = self.canvas.create_text(250,250,text='', width=400)
         self.canvas.grid(column=0,row=1, columnspan=2)
+        self.show_next()
         self.win.mainloop()
 
-    def press_x(self):
-        self.user_answer = False
-    def press_y(self):
-        self.user_answer = True
+    def show_next(self):
+        q_text = html.unescape(self.quizbrain.get_question())
+        self.canvas.itemconfig(self.question, text=q_text)
 
-    def update_score(self, score):
-        self.scoreboard.config(text=f'Score: {score}')
+    def press_x(self):
+        self.give_answer(False)
+
+    def press_y(self):
+        self.give_answer(True)
+
+    def give_answer(self, answer):
+        self.quizbrain.check_answer(answer)
+        self.update_score()
+        if self.quizbrain.next_question():
+            self.show_next()
+        else:
+            self.canvas.itemconfig(self.question, text="You've completed the quiz!")
+            self.x_button.config(state="disabled")
+            self.y_button.config(state="disabled")
+
+    def update_score(self):
+        self.scoreboard.config(text=f'Score: {self.quizbrain.score}/{self.quizbrain.question_length}')
